@@ -25,7 +25,7 @@ class Chart(Widget):
         ),
         Script(
             name='chart-js-widgets.js',
-            path='widgets.js',
+            path='static/chartjs-widgets.js',
             url='chart-js-widgets.js',
             sort_order=SORT_ORDER.LIBRARY,
         ),
