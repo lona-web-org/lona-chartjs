@@ -13,6 +13,10 @@ function ChartjsChart(lona_window) {
         this.chart.data = this.data.data;
         this.chart.update();
     };
+
+    this.deconstruct = function() {
+        this.chart.destroy();
+    };
 };
 
 Lona.register_widget_class('ChartjsChart', ChartjsChart);
