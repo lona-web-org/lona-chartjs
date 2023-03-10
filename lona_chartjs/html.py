@@ -1,13 +1,10 @@
 from lona.static_files import Script, SORT_ORDER
-from lona.html import Node, Widget
+from lona.html import Node
 
 
-class Canvas(Node):
+class Chart(Node):
     TAG_NAME = 'canvas'
-
-
-class Chart(Widget):
-    FRONTEND_WIDGET_CLASS = 'ChartjsChart'
+    WIDGET = 'ChartjsChart'
 
     STATIC_FILES = [
         Script(
@@ -31,25 +28,41 @@ class Chart(Widget):
         ),
     ]
 
-    def __init__(self, data=None, **kwargs):
-        self.nodes = [
-            Canvas(**kwargs),
-        ]
+    def __init__(self, data=None, width=None, height=None):
+        super().__init__()
 
-        self.data = data or {}
+        if data:
+            self.data = data
 
+        if width:
+            self.width = width
+
+        if height:
+            self.height = height
+
+    # data
+    @property
+    def data(self):
+        return self.widget_data
+
+    @data.setter
+    def data(self, new_data):
+        self.widget_data = new_data
+
+    # width
     @property
     def width(self):
-        return self.nodes[0].attributes.get('width', '')
+        return self.attributes.get('width', '')
 
     @width.setter
     def width(self, new_value):
-        self.nodes[0].attributes['width'] = new_value
+        self.attributes['width'] = new_value
 
+    # height
     @property
     def height(self):
-        return self.nodes[0].attributes.get('height', '')
+        return self.attributes.get('height', '')
 
     @height.setter
     def height(self, new_value):
-        self.nodes[0].attributes['height'] = new_value
+        self.attributes['height'] = new_value

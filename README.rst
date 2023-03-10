@@ -1,8 +1,8 @@
 lona-chartjs
 ============
 
-This package contains `Lona <http://lona-web.org>`_ widgets to integrate
-`Chart.js <https://www.chartjs.org/>`_
+This package contains `Chart.js <https://www.chartjs.org/>`_ bindings for
+`Lona <http://lona-web.org>`_
 
 
 Installation
@@ -16,7 +16,7 @@ Installation
 Usage
 -----
 
-``lona_chartjs.Chart`` defines a thin wrapper around the Javascript API of
+``lona_chartjs.html.Chart`` defines a thin wrapper around the Javascript API of
 Chart.js. You can take any demo off
 ``chartjs.org <https://www.chartjs.org/docs/3.5.0/>`` and pass the chart config
 into ``Chart.data``.
@@ -29,13 +29,13 @@ your view.
 
 .. code-block:: python
 
-    from lona import LonaApp, LonaView
     from lona.html import HTML, H1, H2
-    from lona_chartjs import Chart
+    from lona import App, View
 
-    app = LonaApp(__file__)
+    from lona_chartjs.html import Chart
 
-    app.settings.CLIENT_RECOMPILE = True
+    app = App(__file__)
+
 
     BAR_CHART_DATA = {
         # Taken from https://www.chartjs.org/docs/latest/getting-started/usage.html
@@ -77,7 +77,7 @@ your view.
 
 
     @app.route('/')
-    class MyLonaView(LonaView):
+    class MyLonaView(View):
         def handle_request(self, request):
             html = HTML(
                 H1('Hello World'),
@@ -89,7 +89,7 @@ your view.
                 ),
             )
 
-            self.show(html)
+            return html
 
 
     app.run()
