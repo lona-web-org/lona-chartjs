@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 
 [project]
-version = "0.1.2"
+version = "0.2"
 name = "lona-chartjs"
 description = "Chart.js bindings for Lona"
 
