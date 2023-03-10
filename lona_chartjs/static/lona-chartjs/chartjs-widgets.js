@@ -10,7 +10,7 @@ class ChartjsChart{
     }
 
     data_updated() {
-        this.chart.data = this.data;
+        this.chart.data = this.data.data;
         this.chart.update();
     }
 
