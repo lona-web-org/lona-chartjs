@@ -14,5 +14,7 @@ setup(
     author_email='f.scherf@pengutronix.de',
     license='MIT',
     packages=find_packages(),
-    install_requires=[],
+    install_requires=[
+        'lona>=1.10.5',
+    ],
 )

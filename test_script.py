@@ -1,10 +1,10 @@
-from lona import LonaApp, LonaView
 from lona.html import HTML, H1, H2
-from lona_chartjs import Chart
+from lona import App, View
 
-app = LonaApp(__file__)
+from lona_chartjs.html import Chart
 
-app.settings.CLIENT_RECOMPILE = True
+app = App(__file__)
+
 
 BAR_CHART_DATA = {
     # Taken from https://www.chartjs.org/docs/latest/getting-started/usage.html
@@ -46,7 +46,7 @@ BAR_CHART_DATA = {
 
 
 @app.route('/')
-class MyLonaView(LonaView):
+class MyLonaView(View):
     def handle_request(self, request):
         html = HTML(
             H1('Hello World'),
@@ -61,4 +61,4 @@ class MyLonaView(LonaView):
         return html
 
 
-app.run(shell=True)
+app.run()
