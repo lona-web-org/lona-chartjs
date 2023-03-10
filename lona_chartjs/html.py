@@ -9,20 +9,20 @@ class Chart(Node):
     STATIC_FILES = [
         Script(
             name='chart.min.js',
-            path='static/chart.min.js',
+            path='static/lona-chartjs/dist/chart.min.js',
             url='chart.min.js',
             sort_order=SORT_ORDER.FRAMEWORK,
         ),
         Script(
             name='chart.js',
-            path='static/chart.js',
+            path='static/lona-chartjs/dist/chart.js',
             url='chart.js',
             sort_order=SORT_ORDER.FRAMEWORK,
             link=False,
         ),
         Script(
             name='chart-js-widgets.js',
-            path='static/chartjs-widgets.js',
+            path='static/lona-chartjs/chartjs-widgets.js',
             url='chart-js-widgets.js',
             sort_order=SORT_ORDER.LIBRARY,
         ),

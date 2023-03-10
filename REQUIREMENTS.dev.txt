@@ -1,5 +1,0 @@
-.
-lona
-lona-picocss
-tox
-flake8

@@ -1,57 +1,66 @@
 SHELL=/bin/bash
 PYTHON=python3
 
+DIST_ROOT=lona_chartjs/static/lona-chartjs/dist
+
 PYTHON_ENV_ROOT=envs
 PYTHON_DEV_ENV=$(PYTHON_ENV_ROOT)/$(PYTHON)-dev
-PYTHON_PACKAGING_ENV=$(PYTHON_ENV_ROOT)/$(PYTHON)-packaging-env
+PYTHON_PACKAGING_ENV=$(PYTHON_ENV_ROOT)/$(PYTHON)-packaging
+PYTHON_TESTING_ENV=$(PYTHON_ENV_ROOT)/$(PYTHON)-testing
 
-.PHONY: clean doc sdist test ci-test shell freeze
 
-# development environment #####################################################
-$(PYTHON_DEV_ENV)/.created: REQUIREMENTS.dev.txt
+.PHONY: all clean npm-dependencies shell python-shell test-script dist _release
+
+all: | test-script
+
+clean:
+	rm -rf node_modules
+	rm -rf $(PYTHON_ENV_ROOT)
+
+# npm #########################################################################
+node_modules: package.json
+	npm install
+
+npm-dependencies: | node_modules
+	rm -rf $(DIST_ROOT)
+	mkdir -p $(DIST_ROOT)
+	cp -r node_modules/chart.js/dist/* $(DIST_ROOT)
+
+# python ######################################################################
+$(PYTHON_DEV_ENV): pyproject.toml
 	rm -rf $(PYTHON_DEV_ENV) && \
 	$(PYTHON) -m venv $(PYTHON_DEV_ENV) && \
 	. $(PYTHON_DEV_ENV)/bin/activate && \
 	pip install pip --upgrade && \
-	pip install -r ./REQUIREMENTS.dev.txt && \
-	date > $(PYTHON_DEV_ENV)/.created
+	pip install -e .
 
-dev-env: $(PYTHON_DEV_ENV)/.created
-
-# packaging environment #######################################################
-$(PYTHON_PACKAGING_ENV)/.created: REQUIREMENTS.packaging.txt
+$(PYTHON_PACKAGING_ENV): pyproject.toml
 	rm -rf $(PYTHON_PACKAGING_ENV) && \
 	$(PYTHON) -m venv $(PYTHON_PACKAGING_ENV) && \
 	. $(PYTHON_PACKAGING_ENV)/bin/activate && \
 	pip install --upgrade pip && \
-	pip install -r REQUIREMENTS.packaging.txt
-	date > $(PYTHON_PACKAGING_ENV)/.created
+	pip install .[packaging]
 
-packaging-env: $(PYTHON_PACKAGING_ENV)/.created
+# helper
+shell: $(PYTHON_DEV_ENV)
+	. $(PYTHON_DEV_ENV)/bin/activate && \
+	/bin/bash
 
-# environment helper ##########################################################
-clean:
-	rm -rf $(PYTHON_ENV_ROOT)
-
-shell: dev-env
+python-shell: $(PYTHON_DEV_ENV)
 	. $(PYTHON_DEV_ENV)/bin/activate && \
 	rlpython
 
-freeze: dev-env
+# tests
+test-script: $(PYTHON_DEV_ENV)
 	. $(PYTHON_DEV_ENV)/bin/activate && \
-	pip freeze
+	$(PYTHON) test_script.py $(args)
 
-# server ######################################################################
-server: dev-env
-	. $(PYTHON_DEV_ENV)/bin/activate && \
-	python test_script.py
-
-# packaging ###################################################################
-sdist: packaging-env
+# packaging
+dist: $(PYTHON_PACKAGING_ENV)
 	. $(PYTHON_PACKAGING_ENV)/bin/activate && \
 	rm -rf dist *.egg-info && \
-	./setup.py sdist
+	python -m build
 
-_release: sdist
+_release: dist
 	. $(PYTHON_PACKAGING_ENV)/bin/activate && \
 	twine upload --config-file ~/.pypirc.fscherf dist/*
