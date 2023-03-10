@@ -1,0 +1,58 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+
+[project]
+version = "0.1.2"
+name = "lona-chartjs"
+description = "Chart.js bindings for Lona"
+
+authors = [
+  { name="Florian Scherf", email="mail@florianscherf.de" },
+]
+
+license = { file="LICENSE.txt" }
+readme = "README.rst"
+
+classifiers = [
+  "License :: OSI Approved :: MIT License",
+]
+
+requires-python = ">=3.7"
+
+dependencies = [
+  "lona>=1.10.5",
+]
+
+
+[project.optional-dependencies]
+packaging = [
+  "build",
+  "twine",
+]
+
+
+[project.urls]
+"Homepage" = "https://github.com/lona-web-org/lona-chartjs"
+"Repository" = "https://github.com/lona-web-org/lona-chartjs"
+"Bug Tracker" = "https://github.com/lona-web-org/lona-chartjs/issues"
+
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+include = ["lona_chartjs*"]
+
+[tool.setuptools.package-data]
+"lona_chartjs.static" = ["**"]
+"lona_chartjs.templates" = ["**"]
+
+[tool.setuptools.exclude-package-data]
+"*" = [
+  ".*",
+  "~*",
+  "*.swp",
+  "*.pyc",
+]

@@ -1,4 +1,0 @@
-.
-lona
-tox
-flake8

@@ -1,6 +1,0 @@
-recursive-include lona_chartjs/static/ *
-
-global-exclude .*
-global-exclude *~
-global-exclude *.swp
-global-exclude *.pyc
